@@ -7,10 +7,20 @@
         let in_value = $("#form-cart input[name='product-"+_id+"']").attr("value");
         let c_cart = $("#count_cart").attr("count");
         let p_cart = c_cart - (in_value - _value);
-        $("#count_cart").attr("count", p_cart);
-        $("#count_cart").html(p_cart);
-        $("#form-cart input[name='product-"+_id+"']").attr("value",_value);
-        console.log(_value +' > '+in_value);
+        if (_value >=0) {
+          $("#count_cart").attr("count", p_cart);
+          $("#count_cart").html(p_cart);
+          $("#form-cart input[name='product-"+_id+"']").attr("value",_value);
+          if (_value == 0 ) {
+            $(this).parent().parent().remove();
+
+          }
+        }
+        else {
+          alert("กรุณากรอกจำนวนสินค้าให้ถูกต้อง")
+          $(this).val(in_value);
+        }
+        // console.log(_value);
 
       });
   });

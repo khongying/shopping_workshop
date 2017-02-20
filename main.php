@@ -10,8 +10,10 @@
     <!-- Bootstrap -->
     <link href="bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="bootstrap-3.3.7/css/bootstrap-theme.css" rel="stylesheet">
+    <link rel="stylesheet" href="main.css">
     <!-- font-awesome -->
     <link href="font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
     <script src="js/jquery-3.1.1.min.js"></script>
     <script src="bootstrap-3.3.7/js/bootstrap.min.js"></script>
     <title>Shopping</title>
@@ -28,7 +30,31 @@
           }
             $("#count_cart").attr("count",count);
             $("#count_cart").html(display);
+
+            /* in cart */
+            let _id = $(this).parent().parent().attr('id');
+            _id = _id.replace("product-", "");
+
+            if (!$('input[name="product-'+_id+'"]').val() ) {
+
+              let _str = '<input type="hidden" name="product-'+_id+'" value="1" />';
+              console.log(_str);
+              $("#form-cart").append(_str);
+
+            }
+            else {
+              let _val = $('input[name="product-'+_id+'"]').val();
+              _val = +_val + 1
+              $('input[name="product-'+_id+'"]').val(_val);
+            }
         });
+
+        $("#btn-cart").click(function(){
+         $.post( "list-product.php", $( "#form-cart" ).serialize() , function( data ) {
+           $(".modal-body").html(data);
+         });
+       });
+
 
         $( window ).scroll(function() {
          var height = $(window).scrollTop();
@@ -43,119 +69,6 @@
 
     });
     </script>
-    <style>
-      div#count_cart {
-        background-color: #ff0700;
-        padding: 0px 5px;
-        color: #fff;
-        position: absolute;
-        top: 25px;
-        margin-left: 20px;
-        border-radius: 5px;
-      }
-      header #menu{
-        background-color: #FB9696;
-      }
-      input#search {
-        padding: 10px 5px;
-        width: 100%;
-      }
-      div#div-search {
-        padding-top: 10px;
-        background-color: #FB9696;
-      }
-      header .logo{
-        color: white;
-        font-size: 24px;
-        text-align: left;
-        padding: 0 10px;
-        margin-bottom: 10px;
-      }
-      header .input-group-addon{
-        width: 1% !important;
-        display: table-cell;
-      }
-      header #search{
-        padding: 10px 5px;
-        width: 100%;
-      }
-    .product {
-        height: 420px;
-        width: 250px;
-        display: inline-block;
-        border: 1px solid transparent;
-        margin: 1px;
-        cursor: pointer;
-    }
-    .product-card_img{
-        padding: 6px;
-        border: 1px solid transparent;
-        font-size: 13px;
-        line-height: 1.2em;
-        color: rgb(68,68,68);
-        font-weight: 400;
-        box-sizing: border-box;
-        position: relative;
-        cursor: pointer;
-        display: inline-block;
-        display: -webkit-flex;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-flex-flow: column;
-        -ms-flex-flow: column;
-        flex-flow: column;
-    }
-    .product-card_description {
-      margin-top: 1em;
-      padding: 6px;
-    }
-    .product-card_name {
-        height: 2.5em;
-        margin: 0 0 6px;
-        position: relative;
-        display: block;
-        color: inherit;
-        text-decoration: none;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-    .product-card_rate {
-        margin-top: 1em;
-    }
-    .product-card_price {
-        color: #d21f30;
-        font-size: 14px;
-        line-height: 1;
-        margin: 10px 0;
-        vertical-align: middle;
-        text-transform: uppercase;
-    }
-    .product-card_cert {
-        background: #EB89B5;
-        padding: 10px;
-        color: #fff;
-        text-align: center;
-        opacity: 0;
-    }
-    .product:hover  .product-card_cert{
-        opacity: 1;
-    }
-    .product:hover{
-        border: 1px solid #ccc;
-    }
-    .scl_inited header {
-    position: fixed;
-    z-index: 201;
-  }
-  .scl_inited div#menu {
-    display: none;
-  }
-  .scl_inited div#body {
-    padding-top: 123px;
-  }
-    </style>
   </head>
   <body>
     <!-- Large modal -->
@@ -204,8 +117,9 @@
           </div>
           <div class="col-md-3">
               <div id="btn-cart" data-toggle="modal" data-target="#shoppingModal">
-                  <div id="cart"><img src="image/cart.png" /><div>
+                  <div id="cart"><img src="image/cart.png"></div>
                   <div id="count_cart" count="0">0</div>
+                  <div id="in-cart"><form id="form-cart"></form></div>
               </div>
           </div>
         </div>
@@ -229,11 +143,8 @@
               if ($data_product['result'] === true) {
                 // fore($i=1; $i<10; $i++){
                 foreach ($data_product['data'] as $key => $value) {
-
-                  # code...
-
                   ?>
-                  <div class="product">
+                  <div class="product" id="product-<?=$value['id']?>">
                     <div class="product-card_img">
                       <img src="admin/product_image/<?=$value['image']?>" class="img_shopping">
                     </div>

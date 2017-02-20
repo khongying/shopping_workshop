@@ -1,23 +1,32 @@
-<script src="js/jquery-3.1.1.min.js"></script>
-<body>
-    <div id="map">
-
-    </div>
-</body>
-<script type="text/javascript">
-    function iniMap(){
-        var _this = {lat: 13.733058, lng: 100.489344};
-        var map = new google.maps.Map(document.getElementById('map'),{
-            zoom: 4,
-            center: _this
-      });
-      var matker = new google.maps.Marker({
-          position: _this,
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+       #map {
+        height: 400px;
+        width: 100%;
+       }
+    </style>
+  </head>
+  <body>
+    <h3>My Google Maps Demo</h3>
+    <div id="map"></div>
+    <script>
+      function initMap() {
+        var uluru = {lat: 53.403043 , lng: -2.990505};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 10,
+          center: uluru
+        });
+        var marker = new google.maps.Marker({
+          position: uluru,
           map: map
-      });
-    }
-
-</script>
-
-
+        });
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
+    </script>
+  </body>
+</html>
 

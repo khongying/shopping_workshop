@@ -21,10 +21,10 @@ require_once('function-products.php');
             if ($_product['result'] === true) {
               $_info = $_product['data'][$_id];
               print '<tr>';
-              print '<td><img src="admin/product_image/'.$_info['image'].'"/></td>';
+              print '<td><img class="img-rounded img-mini" src="admin/product_image/'.$_info['image'].'"/></td>';
               print '<td>'.$_info['name'].'</td>';
               print '<td>'.$_info['price'].'</td>';
-              print '<td>'.$value.'</td>';
+              print '<td><input type="nunber" min="0" max="99" value="'.$value.'" size="1px"</td>';
               print '</tr>';
 
             }

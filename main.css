@@ -110,3 +110,7 @@ display: none;
 .scl_inited div#body {
 padding-top: 123px;
 }
+.img-mini{
+  height: 65px;
+  width: 65px;
+}
